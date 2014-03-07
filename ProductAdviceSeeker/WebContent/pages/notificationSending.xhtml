@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+<p:growl widgetVar="growl" sticky="true" showDetail="true" />
+            
+<h:form id="form1">
+    <p:panel header="Advice Seeker">
+        <h:panelGrid columns="2">
+            <p:outputLabel for="product" value="Product: " /> 
+            <p:inputText id="product" value="#{growlBean.product}" required="true" />
+
+            <p:outputLabel for="comment" value="Comment: " /> 
+            <p:inputText id="comment" value="#{growlBean.comment}" required="true" />
+        </h:panelGrid>
+
+        <p:commandButton value="Send" actionListener="#{growlBean.send}" />
+        <p:outputLabel  for="notificationStatus"  value="Notification: " />
+         <p:inputText id="notificationStatus" value="dfdf" required="true" />
+    </p:panel>
+</h:form>
+
+<p:socket onMessage="handleMessage" channel="/notifications" />
+
+<script type="text/javascript">
+function handleMessage(facesmessage) {
+	alert('Hi');
+    facesmessage.severity = 'info';
+    var valueExisting= document.getElementById('form1:notificationStatus').value;
+    //alert('Existing Value='+valueExisting);
+    //alert('New Value='+facesmessage);
+    document.getElementById('form1:notificationStatus').value='Received';
+
+    PF('growl').show([facesmessage]);
+}
+</script>
+                    
+
+</h:body>
+</html>
