@@ -1,0 +1,8 @@
+"ProductDetails":
+    {
+      "UPC":"0072151461207",
+      "Description":"FREEMAN ULTRA HAND CARE HAND AND NAIL LOTION LOTION  TUBE 5.3 FLUID OUNCE",
+      "Item_Code":"530516480",
+      "Module":"SKIN CARE",
+      "Rank":"1"
+    }
