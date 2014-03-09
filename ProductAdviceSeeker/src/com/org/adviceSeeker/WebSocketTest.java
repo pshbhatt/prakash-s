@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.json.simple.JSONArray;
@@ -13,12 +15,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.org.productavailability.CallSummaryHeader;
+import com.org.productavailability.ProductAvailabilityResponse;
 import com.org.productavailability.Products;
+import com.org.productavailability.ResultSummary;
+import com.org.productavailability.Retailers;
 
 public class WebSocketTest {
 
 	@SuppressWarnings("unchecked")
-	public static void main(String args[]) throws IOException, ParseException {
+	public static void main(String args[]) throws IOException, ParseException, java.text.ParseException {
 		FileInputStream fstream = new FileInputStream(
 				"C:\\file\\ProductDetails.txt");
 		DataInputStream in = new DataInputStream(fstream);
@@ -35,7 +40,10 @@ public class WebSocketTest {
 				.get("API_Version")));
 		callSummaryHeader.setContentType((String) headerJson
 				.get("Content_Type"));
-		// callSummaryHeader.setDate(Date.valueOf((String)headerJson.get("Date")));
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss");
+	    String dateValue = (String)headerJson.get("Date");
+	    Date actualDate = sf.parse(dateValue);
+		callSummaryHeader.setDate(actualDate);
 		callSummaryHeader.setMessageID(Integer.parseInt((String) headerJson
 				.get("MessageID")));
 		JSONObject productJson = (JSONObject) obj.get("Product");
@@ -56,9 +64,30 @@ public class WebSocketTest {
 			for (Iterator iterator2 = RetailerArray.iterator(); iterator2
 					.hasNext();) {
 				JSONObject object = (JSONObject) iterator2.next();
-				
-				System.out.println("StoreId: "+ object.get("StoreId"));
-				System.out.println("Phone: "+ ((JSONObject)object.get("Locations")).get("Phone"));
+				Retailers retailers = new Retailers();
+				retailers.setPhoneContact((String)object.get("StoreId"));
+				retailers.setAddressLine1((String)((JSONObject)object.get("Locations")).get("Phone"));
+				retailers.setCity((String)((JSONObject)object.get("Locations")).get("City"));
+				retailers.setCountry((String)((JSONObject)object.get("Locations")).get("Country"));
+				retailers.setDistance(Float.parseFloat((String)object.get("Distance")));
+				retailers.setLatitude(Float.parseFloat((String)((JSONObject)object.get("Locations")).get("Latitude")));
+				retailers.setLongitude(Float.parseFloat((String)((JSONObject)object.get("Locations")).get("Longitude")));
+				retailers.setRetailerName((String)object.get("RetailerName"));
+				retailers.setState((String)((JSONObject)object.get("Locations")).get("State"));
+				retailers.setStoreName((String)object.get("StoreName"));
+				retailers.setStoreNumber((String)object.get("StoreNumber"));
+				retailers.setZip((String)((JSONObject)object.get("Locations")).get("ZipCode"));
+				ProductAvailabilityResponse response = new ProductAvailabilityResponse();
+				response.getRetailerList().add(retailers);
+				JSONObject summaryJson = (JSONObject) obj.get("Summary");
+				ResultSummary summary = new ResultSummary();
+				summary.setFarthestResult(Float.parseFloat((String)summaryJson.get("FarthestResult")));
+				summary.setNearestResult(Float.parseFloat((String)summaryJson.get("NearestResult")));
+				summary.setPageNumber(Integer.parseInt((String)summaryJson.get("PageNo")));
+				summary.setPageSize(Integer.parseInt((String)summaryJson.get("PageSize")));
+				summary.setTotalPages(Integer.parseInt((String)summaryJson.get("TotalPages")));
+				summary.setTotalRetailers(Integer.parseInt((String)summaryJson.get("TotalRetailers")));
+				summary.setTotalStores(Integer.parseInt((String)summaryJson.get("TotalStores")));
 				
 			}
 		}
