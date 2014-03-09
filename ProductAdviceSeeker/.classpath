@@ -29,5 +29,6 @@
 	<classpathentry kind="lib" path="C:/Users/vaibhav/Downloads/jackson-databind-2.2.3.jar"/>
 	<classpathentry kind="lib" path="C:/Apache/apache-tomcat-7.0.47/lib/websocket-api.jar"/>
 	<classpathentry kind="lib" path="C:/Apache/apache-tomcat-7.0.47/lib/tomcat7-websocket.jar"/>
+	<classpathentry kind="lib" path="C:/Apache/apache-tomcat-7.0.47/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -20,9 +20,8 @@ import com.org.productavailability.Products;
 import com.org.productavailability.ResultSummary;
 import com.org.productavailability.Retailers;
 
-public class WebSocketTest {
+public class ProductAvailabilityAction {
 
-	@SuppressWarnings("unchecked")
 	public static void main(String args[]) throws IOException, ParseException, java.text.ParseException {
 		FileInputStream fstream = new FileInputStream(
 				"C:\\file\\ProductDetails.txt");
