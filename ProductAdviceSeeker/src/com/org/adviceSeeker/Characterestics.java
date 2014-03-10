@@ -29,11 +29,6 @@ public class Characterestics {
 		}
 		
 		JSONObject obj = (JSONObject) new JSONParser().parse(str);
-		
-		JSONArray charArray = (JSONArray) obj.get("Characteristics");
-		ProductCharData productCharData = new ProductCharData();
-		productCharData.setCharData(charArray.toString());
-		System.out.println(charArray.toString());
 		JSONObject headerJson = (JSONObject) obj.get("Header");
 		ProductCharHeader productCharHeader = new ProductCharHeader();
 		productCharHeader.setApiName((String) headerJson.get("API_Name"));
@@ -48,8 +43,10 @@ public class Characterestics {
 	    productCharHeader.setMessageID(Integer.parseInt((String) headerJson
 				.get("Message_ID")));
 	    
-	    JSONObject characteristics = (JSONObject) obj.get("Characteristics");
-	    System.out.println((String)obj.get("Characteristics"));
+	    JSONArray charArray = (JSONArray) obj.get("Characteristics");
+		ProductCharData productCharData = new ProductCharData();
+		productCharData.setCharData(charArray.toString());
+		System.out.println(charArray.toString());
 		in.close();
 	}
 	
